@@ -1,0 +1,12 @@
+{
+  "frontend/src/App.tsx": "Main app entry with TanStack Router setup, defining routes for homepage, upload page, mod detail page, and the new My Mods page, all wrapped in a shared Layout with a Toaster.",
+  "frontend/src/components/Layout.tsx": "Sticky navigation bar with logo, Browse Mods link, conditional My Mods link (authenticated only), Login/Logout button with Internet Identity integration showing abbreviated principal, Upload Mod button (authenticated only), and branded footer.",
+  "frontend/src/components/ModCard.tsx": "Reusable mod card component displaying title, category badge, game tag, author, upload date, and download count with neon hover glow effect.",
+  "frontend/src/hooks/useQueries.ts": "All React Query hooks for backend operations including listing mods, fetching a single mod, uploading, incrementing download count, deleting mods (with myMods cache invalidation), and a new useGetModsByAuthor hook for fetching mods by principal.",
+  "frontend/src/pages/ModListingPage.tsx": "Homepage with hero banner, real-time search bar, category/game filters, responsive mod grid, loading skeletons, and empty states.",
+  "frontend/src/pages/ModUploadPage.tsx": "Mod upload form with authentication guard — shows a login prompt for unauthenticated users; authenticated users see the full form with drag-and-drop file input, game/category selectors, and the author field auto-populated from the user's principal.",
+  "frontend/src/pages/ModDetailPage.tsx": "Mod detail page showing full metadata, description, file info, and a Download button that increments the backend download counter.",
+  "frontend/src/index.css": "Dark racing theme with OKLCH color tokens, Barlow Condensed display font, neon yellow-green accent utilities, and glow shadow effects.",
+  "frontend/tailwind.config.js": "Extended Tailwind config with neon color scale, surface colors, display font family, and neon box-shadow tokens for the racing theme.",
+  "frontend/src/pages/MyModsPage.tsx": "New My Mods page showing the authenticated user's uploaded mods in a list with title, category badge, game, date, and download count; each mod has a Delete button with an AlertDialog confirmation, and unauthenticated users see a login prompt."
+}

@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "A website for uploading Need for Speed mods. Users can upload, browse, and manage NFS game mods. User authentication via Internet Identity is being added so mod creators can manage their own uploads.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-build-a-mod-browsing-listing-page-as-the-homepage-display-all-uploaded-mods-in-a-responsive-grid-of-cards-each-card-shows-the-mod-title-game-name-category-badge-author-upload-date-and-download-count-include-a-search-bar-to-filter-by-title-or-game-and-a-category-filter-dropdown",
+      "title": "Build a mod browsing/listing page as the homepage. Display all uploaded mods in a responsive grid of cards. Each card shows the mod title, game name, category badge, author, upload date, and download count. Include a search bar to filter by title or game, and a category filter dropdown.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-mod-upload-form-page-accessible-via-an-upload-mod-button-in-the-navigation-the-form-should-collect-mod-title-description-target-nfs-game-select-from-a-predefined-list-underground-underground-2-most-wanted-carbon-prostreet-the-run-rivals-heat-unbound-category-cars-tracks-textures-gameplay-ui-other-author-name-and-a-file-input-for-the-mod-file-on-submit-call-the-backend-uploadmod-method-and-show-a-success-or-error-notification",
+      "title": "Build a mod upload form page accessible via an 'Upload Mod' button in the navigation. The form should collect: mod title, description, target NFS game (select from a predefined list: Underground, Underground 2, Most Wanted, Carbon, ProStreet, The Run, Rivals, Heat, Unbound), category (Cars, Tracks, Textures, Gameplay, UI, Other), author name, and a file input for the mod file. On submit, call the backend uploadMod method and show a success or error notification.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-mod-detail-page-reachable-by-clicking-a-mod-card-on-the-listing-page-display-full-mod-details-title-description-game-category-author-upload-date-and-download-count-include-a-download-button-that-calls-incrementdownloadcount-on-the-backend-and-triggers-the-file-download-include-a-back-to-mods-navigation-link",
+      "title": "Build a mod detail page reachable by clicking a mod card on the listing page. Display full mod details: title, description, game, category, author, upload date, and download count. Include a 'Download' button that calls incrementDownloadCount on the backend and triggers the file download. Include a 'Back to Mods' navigation link.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-dark-high-octane-racing-visual-theme-throughout-the-site-use-a-dark-charcoal-near-black-background-with-neon-yellow-green-c8ff00-or-similar-as-the-primary-accent-color-evoking-street-racing-aesthetics-use-a-bold-modern-sans-serif-typeface-for-headings-and-a-clean-readable-font-for-body-text-cards-should-have-a-dark-surface-with-subtle-glowing-borders-on-hover-the-navigation-bar-should-be-dark-with-the-site-logo-and-accent-colored-call-to-action-buttons-apply-this-theme-consistently-across-all-pages",
+      "title": "Apply a dark, high-octane racing visual theme throughout the site. Use a dark charcoal/near-black background with neon yellow-green (#C8FF00 or similar) as the primary accent color, evoking street racing aesthetics. Use a bold, modern sans-serif typeface for headings and a clean readable font for body text. Cards should have a dark surface with subtle glowing borders on hover. The navigation bar should be dark with the site logo and accent-colored call-to-action buttons. Apply this theme consistently across all pages.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-render-the-generated-static-image-assets-from-frontend-public-assets-generated-use-the-hero-banner-image-on-the-homepage-above-the-mod-listing-grid-and-the-nfs-mod-garage-logo-in-the-navigation-bar",
+      "title": "Render the generated static image assets from frontend/public/assets/generated. Use the hero banner image on the homepage above the mod listing grid, and the NFS Mod Garage logo in the navigation bar.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-login-logout-button-to-the-navigation-bar-in-layout-tsx-that-uses-the-existing-useinternetidentity-hook-when-logged-out-show-a-login-button-styled-with-the-neon-accent-color-that-triggers-internet-identity-authentication-when-logged-in-show-the-user-s-abbreviated-principal-and-a-logout-button",
+      "title": "Add a Login/Logout button to the navigation bar in Layout.tsx that uses the existing `useInternetIdentity` hook. When logged out, show a 'Login' button styled with the neon accent color that triggers Internet Identity authentication. When logged in, show the user's abbreviated principal and a 'Logout' button.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-protect-the-mod-upload-page-and-form-if-the-user-is-not-authenticated-redirect-them-to-the-homepage-or-show-a-prompt-to-log-in-via-internet-identity-instead-of-the-upload-form-when-authenticated-the-upload-form-should-use-the-authenticated-actor-from-useactor-so-the-caller-s-principal-is-recorded-remove-the-manual-author-name-field-or-pre-fill-it-from-identity-context-since-the-principal-is-now-stored-on-the-backend",
+      "title": "Protect the mod upload page and form: if the user is not authenticated, redirect them to the homepage or show a prompt to log in via Internet Identity instead of the upload form. When authenticated, the upload form should use the authenticated actor (from `useActor`) so the caller's principal is recorded. Remove the manual 'author name' field or pre-fill it from identity context, since the principal is now stored on the backend.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-my-mods-page-at-route-my-mods-that-is-only-accessible-when-the-user-is-authenticated-the-page-fetches-and-displays-all-mods-belonging-to-the-logged-in-user-by-calling-getmodsbyowner-with-their-principal-each-mod-entry-in-the-list-shows-the-mod-title-game-category-upload-date-and-a-delete-button-the-delete-button-calls-deletemod-on-the-backend-using-the-authenticated-actor-and-refreshes-the-list-on-success-show-a-confirmation-prompt-before-deletion-add-a-my-mods-navigation-link-in-the-nav-bar-that-is-only-visible-when-logged-in",
+      "title": "Create a 'My Mods' page at route `/my-mods` that is only accessible when the user is authenticated. The page fetches and displays all mods belonging to the logged-in user by calling `getModsByOwner` with their principal. Each mod entry in the list shows the mod title, game, category, upload date, and a 'Delete' button. The 'Delete' button calls `deleteMod` on the backend (using the authenticated actor) and refreshes the list on success. Show a confirmation prompt before deletion. Add a 'My Mods' navigation link in the nav bar that is only visible when logged in.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Mod upload functionality",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Mod browsing/listing page",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Mod detail/download page",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Create a backend data model and actor methods for NFS mods. Each mod entry should store: title, description, game (e.g., NFS Most Wanted, NFS Underground), category (e.g., Cars, Tracks, Textures, Gameplay), author name, upload timestamp, download count, and file metadata (name, size in bytes). Expose methods: uploadMod (create), listMods (paginated), getModById, incrementDownloadCount, and deleteMod.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add Internet Identity authentication: login/logout in nav bar, protected mod uploads with principal stored per mod, and a My Mods page where logged-in users can view and delete only their own uploads.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Update the backend Motoko actor to store the uploader's principal (caller) with each mod entry. Add a query method `getModsByOwner(principal)` that returns only mods belonging to that principal. Update `uploadMod` to record the caller's principal as the mod owner. Update `deleteMod` to enforce that only the mod owner (matching principal) can delete their own mod; return an error variant if the caller is not the owner.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "NFS Mods Hub",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

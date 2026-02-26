@@ -1,0 +1,78 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add Internet Identity authentication with protected uploads and My Mods page",
+  "requirements": [
+    {
+      "id": "REQ-8",
+      "summary": "Add Login/Logout button to navigation bar using Internet Identity with neon accent styling",
+      "acceptanceCriteria": [
+        "Navigation bar shows a 'Login' button when the user is not authenticated.",
+        "Clicking 'Login' triggers the Internet Identity authentication flow.",
+        "When authenticated, the nav bar shows the user's abbreviated principal and a 'Logout' button.",
+        "Clicking 'Logout' ends the session and returns the nav to logged-out state.",
+        "Styling is consistent with the existing dark racing theme and neon accent color."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Add Login/Logout button to the navigation bar that uses the useInternetIdentity hook from the authorization component. When logged out, display a 'Login' button styled with the neon accent color (var(--neon)) that triggers Internet Identity authentication. When logged in, show the user's abbreviated principal (first 5 and last 3 characters) and a 'Logout' button. On logout, clear the query cache using useQueryClient. Verify the authorization component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Protect mod upload page to require authentication and use authenticated actor for uploads",
+      "acceptanceCriteria": [
+        "Visiting /upload while unauthenticated shows a login prompt or redirects to homepage.",
+        "Authenticated users can access and submit the upload form.",
+        "Uploaded mods are associated with the authenticated user's principal on the backend.",
+        "The upload form uses the authenticated actor instance."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ModUploadPage.tsx",
+          "operation": "modify",
+          "description": "Add authentication guard at the top of the component using the useInternetIdentity hook. If the user is not authenticated, display a message prompting them to log in via Internet Identity with a link back to the homepage, instead of rendering the upload form. When authenticated, ensure the upload form uses the authenticated actor from useActor so the caller's principal is automatically recorded on the backend. Remove the manual 'author' field from the form since the principal is now stored server-side. Verify the authorization component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Create My Mods page showing user's own mods with delete functionality and add navigation link",
+      "acceptanceCriteria": [
+        "Route /my-mods exists and renders the My Mods page.",
+        "Unauthenticated users visiting /my-mods are redirected or shown a login prompt.",
+        "The page lists all mods owned by the currently authenticated principal.",
+        "Each mod entry shows title, game, category, and upload date.",
+        "Each mod entry has a Delete button that shows a confirmation prompt before calling deleteMod.",
+        "After successful deletion, the mod is removed from the list without a full page reload.",
+        "A 'My Mods' link appears in the navigation bar only when the user is logged in.",
+        "The page styling is consistent with the dark racing theme."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/MyModsPage.tsx",
+          "operation": "create",
+          "description": "Create a new My Mods page component that is only accessible when authenticated. Use useInternetIdentity to check authentication status and show a login prompt if unauthenticated. When authenticated, fetch the user's mods by calling a new backend capability getModsByOwner with the user's principal. Display each mod with title, game, category badge, and upload date in a grid or list layout matching the dark racing theme with neon accents. Include a Delete button on each mod card that shows a confirmation dialog before calling deleteMod via the authenticated actor from useActor. Use TanStack Query mutation to handle deletion and automatically refresh the mod list on success. Style consistently with existing ModCard and page components. Verify the authorization component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add a new TanStack Query hook useGetModsByOwner that calls the backend capability getModsByOwner with the authenticated user's principal. Also add a mutation hook useDeleteMod that calls deleteMod on the backend and invalidates the modsByOwner query on success to refresh the list."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register the new /my-mods route in the TanStack Router configuration, importing and mounting the MyModsPage component."
+        },
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Add a 'My Mods' navigation link in the header navigation bar that routes to /my-mods. This link should only be visible when the user is authenticated (check using useInternetIdentity). Position it between the 'Browse Mods' link and the 'Upload Mod' button. Style it consistently with the existing navigation links."
+        }
+      ]
+    }
+  ]
+}
