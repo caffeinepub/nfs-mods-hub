@@ -7,8 +7,16 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
+export class ExternalBlob {
+    getBytes(): Promise<Uint8Array<ArrayBuffer>>;
+    getDirectURL(): string;
+    static fromURL(url: string): ExternalBlob;
+    static fromBytes(blob: Uint8Array<ArrayBuffer>): ExternalBlob;
+    withUploadProgress(onProgress: (percentage: number) => void): ExternalBlob;
+}
 export type Time = bigint;
 export interface ModUpload {
+    previewImage?: ExternalBlob;
     title: string;
     game: string;
     description: string;
@@ -19,6 +27,7 @@ export interface ModUpload {
 }
 export interface Mod {
     id: bigint;
+    previewImage?: ExternalBlob;
     title: string;
     game: string;
     description: string;
@@ -39,6 +48,7 @@ export interface backendInterface {
     deleteMod(modId: bigint): Promise<void>;
     getCallerUserRole(): Promise<UserRole>;
     getModById(modId: bigint): Promise<Mod>;
+    getModPreviewImage(modId: bigint): Promise<ExternalBlob | null>;
     getModsByAuthor(author: string): Promise<Array<Mod>>;
     getModsByCategory(category: string): Promise<Array<Mod>>;
     getPopularMods(limit: bigint): Promise<Array<Mod>>;

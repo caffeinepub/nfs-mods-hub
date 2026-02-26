@@ -1,107 +1,57 @@
 {
   "kind": "build_request",
-  "title": "Add Internet Identity authentication with protected uploads and My Mods page",
-  "projectName": "NFS Mod Garage",
+  "title": "Add neon glow effect and custom font styling to nav branding and accent elements",
+  "projectName": "NFS Mods Hub",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-7",
-      "text": "Update the backend Motoko actor to store the uploader's principal (caller) with each mod entry. Add a query method `getModsByOwner(principal)` that returns only mods belonging to that principal. Update `uploadMod` to record the caller's principal as the mod owner. Update `deleteMod` to enforce that only the mod owner (matching principal) can delete their own mod; return an error variant if the caller is not the owner.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-8"
-        ],
-        "quotes": [
-          "Authenticated mod uploads — users must be logged in to upload mods, and their principal (identity) will be stored with each mod",
-          "logged-in users can view and delete only their own mods",
-          "delete actions secured so only the mod owner can manage their content"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Each mod record stores the uploader's principal.",
-        "uploadMod records the caller's principal as the owner.",
-        "deleteMod returns an error if the caller's principal does not match the mod's owner principal.",
-        "getModsByOwner(principal) returns only mods owned by that principal."
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "text": "Add a Login/Logout button to the navigation bar in Layout.tsx that uses the existing `useInternetIdentity` hook. When logged out, show a 'Login' button styled with the neon accent color that triggers Internet Identity authentication. When logged in, show the user's abbreviated principal and a 'Logout' button.",
+      "id": "REQ-17",
+      "text": "Enhance the 'NFS MODS HUB' text in the navigation bar (`frontend/src/components/Layout.tsx`) with a neon glow effect using CSS text-shadow with the neon accent color (#C8FF00). Ensure the Barlow Condensed bold typeface is applied. Optionally add a subtle pulsing or static glow animation to make the branding visually striking.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-8"
+          "msg-4"
         ],
         "quotes": [
-          "Login/Logout button in the nav bar using Internet Identity (passkeys, Google, Apple, Microsoft)"
+          "Adding a neon glow effect and custom font styling to the 'NFS MODS HUB' text and key accent elements to make them really pop!"
         ]
       },
       "acceptanceCriteria": [
-        "Navigation bar shows a 'Login' button when the user is not authenticated.",
-        "Clicking 'Login' triggers the Internet Identity authentication flow.",
-        "When authenticated, the nav bar shows the user's abbreviated principal and a 'Logout' button.",
-        "Clicking 'Logout' ends the session and returns the nav to logged-out state.",
-        "Styling is consistent with the existing dark racing theme and neon accent color."
+        "The 'NFS MODS HUB' nav text displays a visible neon glow effect using #C8FF00 or equivalent CSS variable",
+        "The Barlow Condensed bold typeface is applied to the nav branding text",
+        "The glow effect is consistent with the dark racing theme and does not interfere with readability"
       ]
     },
     {
-      "id": "REQ-9",
-      "text": "Protect the mod upload page and form: if the user is not authenticated, redirect them to the homepage or show a prompt to log in via Internet Identity instead of the upload form. When authenticated, the upload form should use the authenticated actor (from `useActor`) so the caller's principal is recorded. Remove the manual 'author name' field or pre-fill it from identity context, since the principal is now stored on the backend.",
+      "id": "REQ-18",
+      "text": "Apply neon glow styling to other key accent elements across the site (e.g., the 'Upload Mod' button, active nav links, download buttons, category badges, and card hover borders) using CSS box-shadow or text-shadow with the neon accent color (#C8FF00). Define reusable Tailwind utility classes or CSS custom properties for neon glow effects in `frontend/src/index.css` or `frontend/tailwind.config.js` so the effect is applied consistently.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-8"
+          "msg-4"
         ],
         "quotes": [
-          "Protected uploads — users must be logged in to upload mods, with their principal stored against each mod",
-          "Upload and delete actions secured so only the mod owner can manage their content"
+          "Adding a neon glow effect and custom font styling to the 'NFS MODS HUB' text and key accent elements to make them really pop!"
         ]
       },
       "acceptanceCriteria": [
-        "Visiting /upload while unauthenticated shows a login prompt or redirects to homepage.",
-        "Authenticated users can access and submit the upload form.",
-        "Uploaded mods are associated with the authenticated user's principal on the backend.",
-        "The upload form uses the authenticated actor instance."
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "text": "Create a 'My Mods' page at route `/my-mods` that is only accessible when the user is authenticated. The page fetches and displays all mods belonging to the logged-in user by calling `getModsByOwner` with their principal. Each mod entry in the list shows the mod title, game, category, upload date, and a 'Delete' button. The 'Delete' button calls `deleteMod` on the backend (using the authenticated actor) and refreshes the list on success. Show a confirmation prompt before deletion. Add a 'My Mods' navigation link in the nav bar that is only visible when logged in.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-8"
-        ],
-        "quotes": [
-          "My Mods page — logged-in users can view and delete only their own uploads",
-          "logged-in users can view and delete only their own mods",
-          "Upload and delete actions secured so only the mod owner can manage their content"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Route /my-mods exists and renders the My Mods page.",
-        "Unauthenticated users visiting /my-mods are redirected or shown a login prompt.",
-        "The page lists all mods owned by the currently authenticated principal.",
-        "Each mod entry shows title, game, category, and upload date.",
-        "Each mod entry has a Delete button that shows a confirmation prompt before calling deleteMod.",
-        "After successful deletion, the mod is removed from the list without a full page reload.",
-        "A 'My Mods' link appears in the navigation bar only when the user is logged in.",
-        "The page styling is consistent with the dark racing theme."
+        "Neon glow effects are applied to primary CTA buttons (Upload Mod, Download, Login)",
+        "Card hover borders emit a neon glow effect consistent with the accent color",
+        "Active or hovered nav links show a neon glow or underline accent",
+        "Glow utility classes are defined in a reusable way (Tailwind config or CSS variables)",
+        "The effects are consistent across all pages and do not cause layout shifts"
       ]
     }
   ],
   "constraints": [
-    "Use the existing useInternetIdentity hook and useActor hook — do not modify files in frontend/src/hooks/.",
-    "All backend logic must remain in the single backend/main.mo actor file.",
-    "Do not break existing mod listing, detail, or upload functionality."
+    "Do not modify files listed in frontend.immutablePaths",
+    "All neon glow effects must use the existing #C8FF00 accent color or its CSS variable equivalent",
+    "Do not alter the backend"
   ],
   "nonGoals": [
-    "Social login UI customization beyond what Internet Identity provides.",
-    "User profile pages beyond My Mods.",
-    "Mod editing (only deletion is in scope).",
-    "Admin roles or moderation features.",
-    "Email notifications."
+    "Changing the site color scheme or overall theme direction",
+    "Adding new pages or features",
+    "Modifying backend logic"
   ],
   "imageRequirements": {
     "required": [],

@@ -48,41 +48,30 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <img
-                src="/assets/generated/nfs-logo.dim_240x60.png"
-                alt="NFS Mods Hub"
-                className="h-10 w-auto object-contain"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  target.style.display = 'none';
-                  const fallback = target.nextElementSibling as HTMLElement;
-                  if (fallback) fallback.style.display = 'flex';
-                }}
-              />
-              <div className="hidden items-center gap-2">
-                <Zap className="w-6 h-6 text-neon" />
-                <span className="font-display font-black text-xl tracking-tight text-foreground">
-                  NFS <span className="text-neon">MODS</span> HUB
-                </span>
-              </div>
+            <Link to="/" className="flex items-center gap-2 group">
+              <Zap className="w-5 h-5 text-neon drop-shadow-[0_0_6px_#c8ff00]" />
+              <span className="font-display font-black text-xl tracking-widest uppercase text-neon neon-pulse select-none">
+                NFS MODS HUB
+              </span>
             </Link>
 
             {/* Nav Links */}
             <nav className="hidden md:flex items-center gap-6">
               <Link
                 to="/"
-                className="text-sm font-medium text-muted-foreground hover:text-neon transition-colors duration-200 [&.active]:text-neon"
+                className="text-sm font-semibold tracking-wide text-muted-foreground hover:text-neon transition-colors duration-200 [&.active]:text-neon [&.active]:neon-text-glow-sm hover:neon-text-glow-sm relative group/navlink"
               >
                 Browse Mods
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-neon group-hover/navlink:w-full [.active_&]:w-full transition-all duration-300 shadow-[0_0_6px_#c8ff00]" />
               </Link>
               {isAuthenticated && (
                 <Link
                   to="/my-mods"
-                  className="text-sm font-medium text-muted-foreground hover:text-neon transition-colors duration-200 [&.active]:text-neon flex items-center gap-1.5"
+                  className="text-sm font-semibold tracking-wide text-muted-foreground hover:text-neon transition-colors duration-200 [&.active]:text-neon [&.active]:neon-text-glow-sm hover:neon-text-glow-sm flex items-center gap-1.5 relative group/navlink"
                 >
                   <FolderOpen className="w-3.5 h-3.5" />
                   My Mods
+                  <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-neon group-hover/navlink:w-full [.active_&]:w-full transition-all duration-300 shadow-[0_0_6px_#c8ff00]" />
                 </Link>
               )}
             </nav>
@@ -92,7 +81,7 @@ export default function Layout({ children }: LayoutProps) {
               {isAuthenticated && (
                 <Button
                   onClick={() => navigate({ to: '/upload' })}
-                  className="hidden sm:flex bg-neon text-black font-bold hover:bg-neon/90 hover:shadow-neon transition-all duration-200 gap-2"
+                  className="hidden sm:flex bg-neon text-black font-bold hover:bg-neon/90 transition-all duration-200 gap-2 shadow-neon-btn hover:shadow-neon-lg neon-button-active"
                 >
                   <Upload className="w-4 h-4" />
                   Upload Mod
@@ -118,7 +107,7 @@ export default function Layout({ children }: LayoutProps) {
                 <Button
                   onClick={handleLogin}
                   disabled={isLoggingIn}
-                  className="bg-neon text-black font-bold hover:bg-neon/90 hover:shadow-neon transition-all duration-200 gap-2"
+                  className="bg-neon text-black font-bold hover:bg-neon/90 transition-all duration-200 gap-2 shadow-neon-btn hover:shadow-neon-lg neon-button-active"
                 >
                   {isLoggingIn ? (
                     <>
@@ -148,9 +137,9 @@ export default function Layout({ children }: LayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-neon" />
-              <span className="font-display font-black text-lg tracking-tight">
-                NFS <span className="text-neon">MODS</span> HUB
+              <Zap className="w-5 h-5 text-neon drop-shadow-[0_0_6px_#c8ff00]" />
+              <span className="font-display font-black text-lg tracking-widest uppercase">
+                NFS <span className="text-neon neon-text-glow-sm">MODS</span> HUB
               </span>
             </div>
             <p className="text-sm text-muted-foreground text-center">

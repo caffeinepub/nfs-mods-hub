@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 5,
+  "projectStateVersion": 13,
   "summary": "A website for uploading Need for Speed mods. Users can upload, browse, and manage NFS game mods. User authentication via Internet Identity is being added so mod creators can manage their own uploads.",
   "architectural_notes": [],
   "known_issues": [],
@@ -69,6 +69,62 @@
         "REQ-10"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-an-optional-preview-image-file-input-to-the-mod-upload-form-on-moduploadpage-tsx-when-a-user-selects-an-image-file-convert-it-to-bytes-and-include-it-in-the-uploadmod-backend-call-show-a-thumbnail-preview-of-the-selected-image-before-submission-image-upload-should-be-clearly-marked-as-optional",
+      "title": "Add an optional preview image file input to the mod upload form on `ModUploadPage.tsx`. When a user selects an image file, convert it to bytes and include it in the `uploadMod` backend call. Show a thumbnail preview of the selected image before submission. Image upload should be clearly marked as optional.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-modcard-tsx-to-display-the-mod-s-preview-image-at-the-top-of-each-card-when-available-fetch-the-preview-image-using-getmodpreviewimage-when-no-preview-image-is-available-display-a-styled-fallback-placeholder-e-g-a-dark-panel-with-the-nfs-mod-garage-logo-or-a-generic-car-silhouette-icon-the-image-should-be-displayed-in-a-fixed-aspect-ratio-container-to-keep-the-grid-uniform",
+      "title": "Update `ModCard.tsx` to display the mod's preview image at the top of each card when available. Fetch the preview image using `getModPreviewImage`. When no preview image is available, display a styled fallback placeholder (e.g., a dark panel with the NFS Mod Garage logo or a generic car silhouette icon). The image should be displayed in a fixed-aspect-ratio container to keep the grid uniform.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-moddetailpage-tsx-to-prominently-display-the-mod-s-preview-image-near-the-top-of-the-page-when-one-exists-fetch-the-preview-image-using-getmodpreviewimage-when-no-preview-image-is-available-display-a-styled-fallback-placeholder-the-image-should-be-shown-at-a-larger-size-than-on-the-mod-cards",
+      "title": "Update `ModDetailPage.tsx` to prominently display the mod's preview image near the top of the page when one exists. Fetch the preview image using `getModPreviewImage`. When no preview image is available, display a styled fallback placeholder. The image should be shown at a larger size than on the mod cards.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-modlistingpage-tsx-to-use-the-new-hero-banner-image-asset-hero-banner-dim-1920x600-png-as-the-full-width-hero-banner-above-the-mod-listing-grid-replacing-any-previously-referenced-hero-banner-image-filename",
+      "title": "Update `ModListingPage.tsx` to use the new hero banner image asset (`hero-banner.dim_1920x600.png`) as the full-width hero banner above the mod listing grid, replacing any previously referenced hero banner image filename.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-in-frontend-src-components-layout-tsx-remove-the-logo-banner-image-currently-displayed-in-the-top-left-of-the-navigation-bar-and-replace-it-with-the-bold-custom-text-nfs-mods-hub-style-the-text-using-the-existing-neon-accent-color-c8ff00-or-the-css-variable-equivalent-the-barlow-condensed-bold-typeface-and-uppercase-lettering-to-match-the-dark-high-octane-racing-theme-the-text-should-link-to-the-homepage-just-as-the-logo-did",
+      "title": "In `frontend/src/components/Layout.tsx`, remove the logo/banner image currently displayed in the top-left of the navigation bar and replace it with the bold custom text 'NFS MODS HUB'. Style the text using the existing neon accent color (#C8FF00 or the CSS variable equivalent), the Barlow Condensed bold typeface, and uppercase lettering to match the dark high-octane racing theme. The text should link to the homepage ('/') just as the logo did.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-the-nfs-mods-hub-text-in-the-navigation-bar-frontend-src-components-layout-tsx-with-a-neon-glow-effect-using-css-text-shadow-with-the-neon-accent-color-c8ff00-ensure-the-barlow-condensed-bold-typeface-is-applied-optionally-add-a-subtle-pulsing-or-static-glow-animation-to-make-the-branding-visually-striking",
+      "title": "Enhance the 'NFS MODS HUB' text in the navigation bar (`frontend/src/components/Layout.tsx`) with a neon glow effect using CSS text-shadow with the neon accent color (#C8FF00). Ensure the Barlow Condensed bold typeface is applied. Optionally add a subtle pulsing or static glow animation to make the branding visually striking.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-neon-glow-styling-to-other-key-accent-elements-across-the-site-e-g-the-upload-mod-button-active-nav-links-download-buttons-category-badges-and-card-hover-borders-using-css-box-shadow-or-text-shadow-with-the-neon-accent-color-c8ff00-define-reusable-tailwind-utility-classes-or-css-custom-properties-for-neon-glow-effects-in-frontend-src-index-css-or-frontend-tailwind-config-js-so-the-effect-is-applied-consistently",
+      "title": "Apply neon glow styling to other key accent elements across the site (e.g., the 'Upload Mod' button, active nav links, download buttons, category badges, and card hover borders) using CSS box-shadow or text-shadow with the neon accent color (#C8FF00). Define reusable Tailwind utility classes or CSS custom properties for neon glow effects in `frontend/src/index.css` or `frontend/tailwind.config.js` so the effect is applied consistently.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -110,6 +166,32 @@
       "reqIds": [
         "REQ-7"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add optional mod preview image upload to the submission form. Store the image in the backend with the mod entry. Display the preview image on mod cards in the listing grid and on the mod detail page, with a fallback placeholder when no image is provided.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Update the backend Motoko actor to add an optional preview image field (as a Blob or byte array) to the mod data model. Update the `uploadMod` method to accept an optional preview image parameter and store it alongside the mod entry. Add a query method `getModPreviewImage(modId)` that returns the stored preview image bytes for a given mod ID.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Replace the existing hero banner image on the homepage with the user-provided NFS-style banner (red Mitsubishi Lancer racing through a canyon at night), displayed full-width above the mod listing grid.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add a neon glow effect and custom font styling to the 'NFS MODS HUB' nav text and key accent elements to make them visually pop.",
+      "reqIds": [],
       "status": "pending"
     }
   ],

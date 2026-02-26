@@ -46,6 +46,9 @@
     --neon: 0.88 0.22 130;
     --surface: 0.15 0.005 240;
     --surface-elevated: 0.18 0.005 240;
+
+    /* Neon color literal for use in text-shadow / box-shadow */
+    --neon-hex: #c8ff00;
   }
 
   .dark {
@@ -85,6 +88,7 @@
     --neon: 0.88 0.22 130;
     --surface: 0.14 0.005 240;
     --surface-elevated: 0.17 0.005 240;
+    --neon-hex: #c8ff00;
   }
 
   * {
@@ -143,4 +147,82 @@
   .bg-white\/2 {
     background-color: rgb(255 255 255 / 0.02);
   }
+
+  /* Neon text glow — for branding and headings */
+  .neon-text-glow {
+    text-shadow:
+      0 0 8px var(--neon-hex),
+      0 0 20px var(--neon-hex),
+      0 0 40px color-mix(in srgb, var(--neon-hex) 60%, transparent);
+  }
+
+  /* Subtle neon text glow — for nav links on hover */
+  .neon-text-glow-sm {
+    text-shadow:
+      0 0 6px var(--neon-hex),
+      0 0 14px color-mix(in srgb, var(--neon-hex) 50%, transparent);
+  }
+
+  /* Neon border glow — for card hover states */
+  .neon-border-glow {
+    box-shadow:
+      0 0 0 1px oklch(var(--neon) / 0.5),
+      0 0 16px oklch(var(--neon) / 0.3),
+      0 0 32px oklch(var(--neon) / 0.12);
+  }
+
+  /* Neon button glow — for primary CTA buttons */
+  .neon-button-glow {
+    box-shadow:
+      0 0 12px oklch(var(--neon) / 0.5),
+      0 0 28px oklch(var(--neon) / 0.25),
+      0 2px 8px oklch(0.05 0 0 / 0.6);
+  }
+
+  .hover\:neon-button-glow:hover {
+    box-shadow:
+      0 0 12px oklch(var(--neon) / 0.5),
+      0 0 28px oklch(var(--neon) / 0.25),
+      0 2px 8px oklch(0.05 0 0 / 0.6);
+  }
+}
+
+/* Neon pulse animation for the brand logo */
+@keyframes neon-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 8px #c8ff00,
+      0 0 20px #c8ff00,
+      0 0 40px rgba(200, 255, 0, 0.6);
+  }
+  50% {
+    text-shadow:
+      0 0 4px #c8ff00,
+      0 0 12px #c8ff00,
+      0 0 24px rgba(200, 255, 0, 0.3);
+  }
+}
+
+.neon-pulse {
+  animation: neon-pulse 2.8s ease-in-out infinite;
+}
+
+/* Neon button shimmer on hover */
+@keyframes neon-button-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 12px rgba(200, 255, 0, 0.5),
+      0 0 28px rgba(200, 255, 0, 0.25),
+      0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+  50% {
+    box-shadow:
+      0 0 18px rgba(200, 255, 0, 0.7),
+      0 0 40px rgba(200, 255, 0, 0.35),
+      0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.neon-button-active {
+  animation: neon-button-pulse 1.8s ease-in-out infinite;
 }

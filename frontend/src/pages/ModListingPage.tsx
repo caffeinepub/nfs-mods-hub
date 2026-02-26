@@ -51,10 +51,10 @@ export default function ModListingPage() {
       {/* Hero Banner */}
       <div className="relative w-full overflow-hidden">
         <img
-          src="/assets/generated/nfs-hero-banner.dim_1400x400.png"
+          src="/assets/generated/hero-banner.dim_1920x600.png"
           alt="NFS Mods Hub - Race. Customize. Dominate."
-          className="w-full object-cover"
-          style={{ maxHeight: '400px' }}
+          className="w-full object-cover object-center"
+          style={{ maxHeight: '600px' }}
           onError={(e) => {
             const target = e.currentTarget;
             target.style.display = 'none';
@@ -65,7 +65,7 @@ export default function ModListingPage() {
         {/* Fallback hero */}
         <div
           className="hidden w-full items-center justify-center"
-          style={{ height: '320px', background: 'linear-gradient(135deg, #0a0a0a 0%, #111 40%, #0d1a00 100%)' }}
+          style={{ height: '400px', background: 'linear-gradient(135deg, #0a0a0a 0%, #111 40%, #0d1a00 100%)' }}
         >
           <div className="text-center px-4">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -80,7 +80,7 @@ export default function ModListingPage() {
           </div>
         </div>
         {/* Gradient overlay at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
       </div>
 
       {/* Content */}

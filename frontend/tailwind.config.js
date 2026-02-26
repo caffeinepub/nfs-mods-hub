@@ -97,6 +97,9 @@ export default {
         xs: '0 1px 2px 0 rgba(0,0,0,0.05)',
         neon: '0 0 20px oklch(0.88 0.22 130 / 0.4), 0 0 40px oklch(0.88 0.22 130 / 0.15)',
         'neon-sm': '0 0 12px oklch(0.88 0.22 130 / 0.25), 0 4px 20px rgba(0,0,0,0.5)',
+        'neon-lg': '0 0 24px oklch(0.88 0.22 130 / 0.55), 0 0 60px oklch(0.88 0.22 130 / 0.25), 0 4px 20px rgba(0,0,0,0.6)',
+        'neon-btn': '0 0 12px rgba(200,255,0,0.5), 0 0 28px rgba(200,255,0,0.25), 0 2px 8px rgba(0,0,0,0.6)',
+        'neon-card': '0 0 0 1px rgba(200,255,0,0.45), 0 0 16px rgba(200,255,0,0.28), 0 0 32px rgba(200,255,0,0.1)',
       },
       keyframes: {
         'accordion-down': {
@@ -107,10 +110,28 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        'neon-pulse': {
+          '0%, 100%': {
+            textShadow: '0 0 8px #c8ff00, 0 0 20px #c8ff00, 0 0 40px rgba(200,255,0,0.6)',
+          },
+          '50%': {
+            textShadow: '0 0 4px #c8ff00, 0 0 12px #c8ff00, 0 0 24px rgba(200,255,0,0.3)',
+          },
+        },
+        'neon-btn-pulse': {
+          '0%, 100%': {
+            boxShadow: '0 0 12px rgba(200,255,0,0.5), 0 0 28px rgba(200,255,0,0.25), 0 2px 8px rgba(0,0,0,0.6)',
+          },
+          '50%': {
+            boxShadow: '0 0 18px rgba(200,255,0,0.7), 0 0 40px rgba(200,255,0,0.35), 0 2px 8px rgba(0,0,0,0.6)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'neon-pulse': 'neon-pulse 2.8s ease-in-out infinite',
+        'neon-btn-pulse': 'neon-btn-pulse 1.8s ease-in-out infinite',
       },
     },
   },

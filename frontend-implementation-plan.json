@@ -1,76 +1,64 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add Internet Identity authentication with protected uploads and My Mods page",
+  "title": "Add neon glow effect and custom font styling to nav branding and accent elements",
   "requirements": [
     {
-      "id": "REQ-8",
-      "summary": "Add Login/Logout button to navigation bar using Internet Identity with neon accent styling",
+      "id": "REQ-17",
+      "summary": "Enhance the 'NFS MODS HUB' navigation branding with neon glow effect and Barlow Condensed bold typeface",
       "acceptanceCriteria": [
-        "Navigation bar shows a 'Login' button when the user is not authenticated.",
-        "Clicking 'Login' triggers the Internet Identity authentication flow.",
-        "When authenticated, the nav bar shows the user's abbreviated principal and a 'Logout' button.",
-        "Clicking 'Logout' ends the session and returns the nav to logged-out state.",
-        "Styling is consistent with the existing dark racing theme and neon accent color."
+        "The 'NFS MODS HUB' nav text displays a visible neon glow effect using #C8FF00 or equivalent CSS variable",
+        "The Barlow Condensed bold typeface is applied to the nav branding text",
+        "The glow effect is consistent with the dark racing theme and does not interfere with readability"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/Layout.tsx",
           "operation": "modify",
-          "description": "Add Login/Logout button to the navigation bar that uses the useInternetIdentity hook from the authorization component. When logged out, display a 'Login' button styled with the neon accent color (var(--neon)) that triggers Internet Identity authentication. When logged in, show the user's abbreviated principal (first 5 and last 3 characters) and a 'Logout' button. On logout, clear the query cache using useQueryClient. Verify the authorization component's usage instructions before implementing."
+          "description": "Add neon glow styling classes to the 'NFS MODS HUB' text element. Apply Barlow Condensed bold font family and neon glow utility classes (to be defined in REQ-18) that use text-shadow with the #C8FF00 accent color. Optionally add a subtle pulsing animation class for visual impact."
         }
       ]
     },
     {
-      "id": "REQ-9",
-      "summary": "Protect mod upload page to require authentication and use authenticated actor for uploads",
+      "id": "REQ-18",
+      "summary": "Apply reusable neon glow styling to key accent elements across the site including buttons, nav links, category badges, and card hover borders",
       "acceptanceCriteria": [
-        "Visiting /upload while unauthenticated shows a login prompt or redirects to homepage.",
-        "Authenticated users can access and submit the upload form.",
-        "Uploaded mods are associated with the authenticated user's principal on the backend.",
-        "The upload form uses the authenticated actor instance."
+        "Neon glow effects are applied to primary CTA buttons (Upload Mod, Download, Login)",
+        "Card hover borders emit a neon glow effect consistent with the accent color",
+        "Active or hovered nav links show a neon glow or underline accent",
+        "Glow utility classes are defined in a reusable way (Tailwind config or CSS variables)",
+        "The effects are consistent across all pages and do not cause layout shifts"
       ],
       "file_operations": [
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Extend the Tailwind configuration to add custom neon glow utilities. Define box-shadow variants for neon glow effects (neon-glow-sm, neon-glow, neon-glow-lg) using the #C8FF00 accent color. Add text-shadow utilities (text-neon-glow) for text elements. Optionally define a subtle pulsing animation keyframe for neon effects."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add custom CSS classes for neon glow effects using the existing --color-accent CSS variable. Define reusable utility classes (.neon-text-glow, .neon-border-glow, .neon-button-glow) with text-shadow and box-shadow properties. Include optional pulsing animation keyframes and apply animation classes. Ensure effects use the #C8FF00 accent color and are consistent with the dark theme."
+        },
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Apply neon glow utility classes to the Upload Mod button and navigation links. Add hover state classes that trigger neon glow effects on nav links (Browse Mods, My Mods). Ensure active/hovered links display a neon underline or glow accent consistent with the accent color."
+        },
+        {
+          "path": "frontend/src/components/ModCard.tsx",
+          "operation": "modify",
+          "description": "Add neon glow effects to the card hover state borders and category badges. Apply the neon-border-glow utility class on hover to emit a glow effect using the #C8FF00 accent color. Ensure the hover animation does not cause layout shifts and maintains smooth transitions."
+        },
         {
           "path": "frontend/src/pages/ModUploadPage.tsx",
           "operation": "modify",
-          "description": "Add authentication guard at the top of the component using the useInternetIdentity hook. If the user is not authenticated, display a message prompting them to log in via Internet Identity with a link back to the homepage, instead of rendering the upload form. When authenticated, ensure the upload form uses the authenticated actor from useActor so the caller's principal is automatically recorded on the backend. Remove the manual 'author' field from the form since the principal is now stored server-side. Verify the authorization component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "summary": "Create My Mods page showing user's own mods with delete functionality and add navigation link",
-      "acceptanceCriteria": [
-        "Route /my-mods exists and renders the My Mods page.",
-        "Unauthenticated users visiting /my-mods are redirected or shown a login prompt.",
-        "The page lists all mods owned by the currently authenticated principal.",
-        "Each mod entry shows title, game, category, and upload date.",
-        "Each mod entry has a Delete button that shows a confirmation prompt before calling deleteMod.",
-        "After successful deletion, the mod is removed from the list without a full page reload.",
-        "A 'My Mods' link appears in the navigation bar only when the user is logged in.",
-        "The page styling is consistent with the dark racing theme."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/MyModsPage.tsx",
-          "operation": "create",
-          "description": "Create a new My Mods page component that is only accessible when authenticated. Use useInternetIdentity to check authentication status and show a login prompt if unauthenticated. When authenticated, fetch the user's mods by calling a new backend capability getModsByOwner with the user's principal. Display each mod with title, game, category badge, and upload date in a grid or list layout matching the dark racing theme with neon accents. Include a Delete button on each mod card that shows a confirmation dialog before calling deleteMod via the authenticated actor from useActor. Use TanStack Query mutation to handle deletion and automatically refresh the mod list on success. Style consistently with existing ModCard and page components. Verify the authorization component's usage instructions before implementing."
+          "description": "Apply neon glow utility classes to the primary Upload button in the form. Ensure the button displays a consistent neon glow effect on hover and focus states using the defined utility classes."
         },
         {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/src/pages/ModDetailPage.tsx",
           "operation": "modify",
-          "description": "Add a new TanStack Query hook useGetModsByOwner that calls the backend capability getModsByOwner with the authenticated user's principal. Also add a mutation hook useDeleteMod that calls deleteMod on the backend and invalidates the modsByOwner query on success to refresh the list."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Register the new /my-mods route in the TanStack Router configuration, importing and mounting the MyModsPage component."
-        },
-        {
-          "path": "frontend/src/components/Layout.tsx",
-          "operation": "modify",
-          "description": "Add a 'My Mods' navigation link in the header navigation bar that routes to /my-mods. This link should only be visible when the user is authenticated (check using useInternetIdentity). Position it between the 'Browse Mods' link and the 'Upload Mod' button. Style it consistently with the existing navigation links."
+          "description": "Apply neon glow utility classes to the Download button. Ensure the button displays a consistent neon glow effect on hover and active states using the #C8FF00 accent color and defined utility classes."
         }
       ]
     }

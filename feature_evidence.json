@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-a-login-logout-button-to-the-navigation-bar-in-layout-tsx-that-uses-the-existing-useinternetidentity-hook-when-logged-out-show-a-login-button-styled-with-the-neon-accent-color-that-triggers-internet-identity-authentication-when-logged-in-show-the-user-s-abbreviated-principal-and-a-logout-button",
-      "featureTitle": "Add a Login/Logout button to the navigation bar in Layout.tsx that uses the existing `useInternetIdentity` hook. When logged out, show a 'Login' button styled with the neon accent color that triggers Internet Identity authentication. When logged in, show the user's abbreviated principal and a 'Logout' button.",
+      "featureId": "feature-enhance-the-nfs-mods-hub-text-in-the-navigation-bar-frontend-src-components-layout-tsx-with-a-neon-glow-effect-using-css-text-shadow-with-the-neon-accent-color-c8ff00-ensure-the-barlow-condensed-bold-typeface-is-applied-optionally-add-a-subtle-pulsing-or-static-glow-animation-to-make-the-branding-visually-striking",
+      "featureTitle": "Enhance the 'NFS MODS HUB' text in the navigation bar (`frontend/src/components/Layout.tsx`) with a neon glow effect using CSS text-shadow with the neon accent color (#C8FF00). Ensure the Barlow Condensed bold typeface is applied. Optionally add a subtle pulsing or static glow animation to make the branding visually striking.",
       "files": [
         "frontend/src/components/Layout.tsx"
       ],
@@ -13,40 +13,24 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-8"
+        "REQ-17"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-protect-the-mod-upload-page-and-form-if-the-user-is-not-authenticated-redirect-them-to-the-homepage-or-show-a-prompt-to-log-in-via-internet-identity-instead-of-the-upload-form-when-authenticated-the-upload-form-should-use-the-authenticated-actor-from-useactor-so-the-caller-s-principal-is-recorded-remove-the-manual-author-name-field-or-pre-fill-it-from-identity-context-since-the-principal-is-now-stored-on-the-backend",
-      "featureTitle": "Protect the mod upload page and form: if the user is not authenticated, redirect them to the homepage or show a prompt to log in via Internet Identity instead of the upload form. When authenticated, the upload form should use the authenticated actor (from `useActor`) so the caller's principal is recorded. Remove the manual 'author name' field or pre-fill it from identity context, since the principal is now stored on the backend.",
+      "featureId": "feature-apply-neon-glow-styling-to-other-key-accent-elements-across-the-site-e-g-the-upload-mod-button-active-nav-links-download-buttons-category-badges-and-card-hover-borders-using-css-box-shadow-or-text-shadow-with-the-neon-accent-color-c8ff00-define-reusable-tailwind-utility-classes-or-css-custom-properties-for-neon-glow-effects-in-frontend-src-index-css-or-frontend-tailwind-config-js-so-the-effect-is-applied-consistently",
+      "featureTitle": "Apply neon glow styling to other key accent elements across the site (e.g., the 'Upload Mod' button, active nav links, download buttons, category badges, and card hover borders) using CSS box-shadow or text-shadow with the neon accent color (#C8FF00). Define reusable Tailwind utility classes or CSS custom properties for neon glow effects in `frontend/src/index.css` or `frontend/tailwind.config.js` so the effect is applied consistently.",
       "files": [
-        "frontend/src/pages/ModUploadPage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-9"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-a-my-mods-page-at-route-my-mods-that-is-only-accessible-when-the-user-is-authenticated-the-page-fetches-and-displays-all-mods-belonging-to-the-logged-in-user-by-calling-getmodsbyowner-with-their-principal-each-mod-entry-in-the-list-shows-the-mod-title-game-category-upload-date-and-a-delete-button-the-delete-button-calls-deletemod-on-the-backend-using-the-authenticated-actor-and-refreshes-the-list-on-success-show-a-confirmation-prompt-before-deletion-add-a-my-mods-navigation-link-in-the-nav-bar-that-is-only-visible-when-logged-in",
-      "featureTitle": "Create a 'My Mods' page at route `/my-mods` that is only accessible when the user is authenticated. The page fetches and displays all mods belonging to the logged-in user by calling `getModsByOwner` with their principal. Each mod entry in the list shows the mod title, game, category, upload date, and a 'Delete' button. The 'Delete' button calls `deleteMod` on the backend (using the authenticated actor) and refreshes the list on success. Show a confirmation prompt before deletion. Add a 'My Mods' navigation link in the nav bar that is only visible when logged in.",
-      "files": [
-        "frontend/src/App.tsx",
         "frontend/src/components/Layout.tsx",
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/pages/MyModsPage.tsx"
+        "frontend/src/components/ModCard.tsx",
+        "frontend/src/index.css",
+        "frontend/src/pages/ModDetailPage.tsx",
+        "frontend/src/pages/ModUploadPage.tsx",
+        "frontend/tailwind.config.js"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -54,10 +38,11 @@
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
         "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-10"
+        "REQ-18"
       ],
       "confidence": "high"
     }

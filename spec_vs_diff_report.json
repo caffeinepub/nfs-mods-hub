@@ -1,94 +1,34 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-26T00:57:28.346Z",
-  "summary": "The diff implements most of the required features: Login/Logout in Layout.tsx (REQ-8), My Mods page at /my-mods (REQ-10), upload page auth guard (REQ-9), and some backend changes. However, the backend (main.mo) does NOT store the caller's principal per mod, does NOT implement getModsByOwner(principal), and does NOT enforce principal-based ownership in deleteMod. Instead it retains the old text-based author/admin model. The frontend works around this by using the principal as the author string and calling getModsByAuthor, but the strict REQ-7 backend requirements are not met.",
-  "missing_requirements": [
-    {
-      "id": "REQ-7",
-      "requirement": "Each mod record stores the uploader's principal as a Principal type, not a text author string.",
-      "reason": "The Mod type in main.mo still has 'author: Text' with no Principal field. The principal is passed as a text string in the 'author' field, not stored as a Principal type.",
-      "evidence": [
-        "backend/main.mo"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "requirement": "uploadMod records the caller's principal as the mod owner using the caller context, not a user-supplied field.",
-      "reason": "In main.mo, uploadMod still accepts 'author' as part of the ModUpload input struct and uses upload.author rather than automatically recording the caller's principal from the shared context.",
-      "evidence": [
-        "backend/main.mo"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "requirement": "deleteMod enforces that only the mod owner (matching principal) can delete their own mod and returns an error variant if caller is not the owner.",
-      "reason": "In main.mo, deleteMod still uses admin-based access control (AccessControl.isAdmin) rather than checking if the caller's principal matches the mod's owner principal. It also traps instead of returning an error variant.",
-      "evidence": [
-        "backend/main.mo"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "requirement": "getModsByOwner(principal) query method returns only mods owned by that principal.",
-      "reason": "No getModsByOwner method exists in main.mo. The frontend uses getModsByAuthor(text) as a workaround, but the required getModsByOwner(principal) backend method is absent.",
-      "evidence": [
-        "backend/main.mo",
-        "frontend/src/hooks/useQueries.ts"
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "requirement": "The My Mods page calls getModsByOwner with the user's principal.",
-      "reason": "MyModsPage.tsx uses useGetModsByAuthor (which calls getModsByAuthor with a text string) rather than getModsByOwner with a Principal, because the backend method was not implemented.",
-      "evidence": [
-        "frontend/src/pages/MyModsPage.tsx",
-        "frontend/src/hooks/useQueries.ts"
-      ]
-    }
-  ],
+  "generatedAt": "2026-02-26T02:41:09.150Z",
+  "summary": "Both REQ-17 and REQ-18 are substantially implemented. REQ-17 is fully satisfied: 'NFS MODS HUB' in Layout.tsx uses font-display (Barlow Condensed), font-black, text-neon, and neon-pulse animation. REQ-18 is also well implemented: reusable glow utilities are defined in index.css and tailwind.config.js, Upload Mod and Login buttons have neon glow classes, card hover borders use shadow-neon-card, nav links have neon glow/underline on hover and active state, and Download button on ModDetailPage has neon glow. All acceptance criteria appear covered.",
+  "missing_requirements": [],
   "hallucinated_features": [
     {
-      "description": "A migration.mo module was added that is effectively a no-op migration with identical OldMod and NewMod types and no principal field added.",
-      "reason": "The build request does not ask for a migration module, and the migration does not add principal storage as REQ-7 requires.",
+      "description": "A new 'My Mods' page (MyModsPage.tsx) was added with full mod management functionality including delete with confirmation dialog, and a new useGetModsByAuthor hook.",
+      "reason": "Neither REQ-17 nor REQ-18 requested a My Mods page, delete functionality, or author-based mod fetching. These are new features not in the build request.",
       "evidence": [
-        "backend/migration.mo"
+        "frontend-file-summaries.txt"
       ]
     },
     {
-      "description": "A comprehensive urlParams.ts utility file was added with URL parameter extraction, sessionStorage persistence, and admin token handling for caffeineAdminToken.",
-      "reason": "The build request does not request URL parameter utilities or session parameter persistence. This appears to be infrastructure for an admin token feature not in scope.",
+      "description": "A hero banner image asset and updated ModListingPage with a full-width hero banner section were added.",
+      "reason": "The build request only requested neon glow and font styling enhancements. A hero banner is a new layout/page feature not mentioned in REQ-17 or REQ-18.",
       "evidence": [
-        "frontend/src/utils/urlParams.ts"
-      ]
-    },
-    {
-      "description": "The useActor hook calls actor._initializeAccessControlWithSecret(adminToken) using a caffeineAdminToken extracted from URL params.",
-      "reason": "Admin roles and access control token initialization are explicitly listed as non-goals in the build request.",
-      "evidence": [
-        "frontend/src/hooks/useActor.ts"
-      ]
-    },
-    {
-      "description": "MixinAuthorization and AccessControl modules are imported and used in main.mo for admin-based deletion control.",
-      "reason": "The build request specifies owner-based principal-matching deletion, not admin role-based deletion. Admin roles are a non-goal.",
-      "evidence": [
-        "backend/main.mo"
+        "frontend-file-summaries.txt"
       ]
     }
   ],
-  "confidence": 0.88,
+  "confidence": 0.82,
   "changed_files": [
-    "backend/main.mo",
-    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/App.tsx",
     "frontend/src/components/Layout.tsx",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/components/ModCard.tsx",
+    "frontend/src/index.css",
+    "frontend/src/pages/ModDetailPage.tsx",
     "frontend/src/pages/ModUploadPage.tsx",
-    "frontend/src/pages/MyModsPage.tsx",
-    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
     "project_state.json"
   ]
 }

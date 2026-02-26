@@ -6,15 +6,19 @@ import Order "mo:core/Order";
 import Runtime "mo:core/Runtime";
 import Text "mo:core/Text";
 import Time "mo:core/Time";
-import Migration "migration";
+
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
+import MixinStorage "blob-storage/Mixin";
+import Storage "blob-storage/Storage";
 
-(with migration = Migration.run)
+
+
 actor {
   // State
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
+  include MixinStorage();
 
   // Mod Types
   type Mod = {
@@ -28,6 +32,7 @@ actor {
     downloadCount : Nat;
     fileName : Text;
     fileSize : Nat;
+    previewImage : ?Storage.ExternalBlob;
   };
 
   type ModUpload = {
@@ -38,6 +43,7 @@ actor {
     author : Text;
     fileName : Text;
     fileSize : Nat;
+    previewImage : ?Storage.ExternalBlob;
   };
 
   module Mod {
@@ -54,6 +60,10 @@ actor {
 
   // Mod Upload — only authenticated users can upload
   public shared ({ caller }) func uploadMod(upload : ModUpload) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can upload mods");
+    };
+
     let modId = nextModId;
     nextModId += 1;
 
@@ -68,6 +78,7 @@ actor {
       downloadCount = 0;
       fileName = upload.fileName;
       fileSize = upload.fileSize;
+      previewImage = upload.previewImage;
     };
 
     modsById.add(modId, newMod);
@@ -183,5 +194,13 @@ actor {
     let allMods = modsById.values().toArray();
     let sortedMods = allMods.sort(Mod.compareByDownloadCount);
     sortedMods.sliceToArray(0, limit);
+  };
+
+  // Get Mod Preview Image — public read, no auth required
+  public query func getModPreviewImage(modId : Nat) : async ?Storage.ExternalBlob {
+    switch (modsById.get(modId)) {
+      case (null) { Runtime.trap("Mod not found") };
+      case (?mod) { mod.previewImage };
+    };
   };
 };

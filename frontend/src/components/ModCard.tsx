@@ -1,6 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
 import { Download, Calendar, User, Gamepad2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import type { Mod } from '../backend';
 
 interface ModCardProps {
@@ -25,36 +24,45 @@ function formatDate(timestamp: bigint): string {
   });
 }
 
-function formatFileSize(bytes: bigint): string {
-  const n = Number(bytes);
-  if (n === 0) return '0 B';
-  if (n < 1024) return `${n} B`;
-  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
-  return `${(n / (1024 * 1024)).toFixed(1)} MB`;
-}
-
 export default function ModCard({ mod }: ModCardProps) {
   const navigate = useNavigate();
   const categoryClass = CATEGORY_COLORS[mod.category] ?? CATEGORY_COLORS['Other'];
+  const previewUrl = mod.previewImage ? mod.previewImage.getDirectURL() : null;
 
   return (
     <article
       onClick={() => navigate({ to: '/mod/$id', params: { id: mod.id.toString() } })}
-      className="group relative bg-surface border border-white/5 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:border-neon/50 hover:shadow-neon-sm hover:-translate-y-1"
+      className="group relative bg-surface border border-white/5 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:border-neon/50 hover:shadow-neon-card hover:-translate-y-1 flex flex-col"
     >
       {/* Top accent bar */}
-      <div className="h-0.5 w-full bg-gradient-to-r from-neon/0 via-neon/60 to-neon/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="h-0.5 w-full bg-gradient-to-r from-neon/0 via-neon/80 to-neon/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_8px_#c8ff00]" />
 
-      <div className="p-5">
-        {/* Header */}
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <h3 className="font-display font-bold text-base text-foreground leading-tight group-hover:text-neon transition-colors duration-200 line-clamp-2">
-            {mod.title}
-          </h3>
-          <span className={`shrink-0 text-xs font-semibold px-2 py-0.5 rounded border ${categoryClass}`}>
-            {mod.category}
-          </span>
-        </div>
+      {/* Preview Image */}
+      <div className="relative w-full aspect-video overflow-hidden bg-background/60 shrink-0">
+        {previewUrl ? (
+          <img
+            src={previewUrl}
+            alt={`${mod.title} preview`}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <img
+            src="/assets/generated/mod-preview-placeholder.dim_800x450.png"
+            alt="No preview available"
+            className="w-full h-full object-cover opacity-40"
+          />
+        )}
+        {/* Category badge overlay */}
+        <span className={`absolute top-2 right-2 text-xs font-semibold px-2 py-0.5 rounded border backdrop-blur-sm ${categoryClass}`}>
+          {mod.category}
+        </span>
+      </div>
+
+      <div className="p-5 flex flex-col flex-1">
+        {/* Title */}
+        <h3 className="font-display font-bold text-base text-foreground leading-tight group-hover:text-neon group-hover:neon-text-glow-sm transition-colors duration-200 line-clamp-2 mb-2">
+          {mod.title}
+        </h3>
 
         {/* Description */}
         {mod.description && (
@@ -72,7 +80,7 @@ export default function ModCard({ mod }: ModCardProps) {
         </div>
 
         {/* Footer metadata */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/5">
+        <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <User className="w-3 h-3" />
@@ -83,7 +91,7 @@ export default function ModCard({ mod }: ModCardProps) {
               {formatDate(mod.uploadTimestamp)}
             </span>
           </div>
-          <span className="flex items-center gap-1 text-xs font-semibold text-neon/80">
+          <span className="flex items-center gap-1 text-xs text-muted-foreground">
             <Download className="w-3 h-3" />
             {mod.downloadCount.toString()}
           </span>

@@ -1,42 +1,18 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-26T00:57:28.348Z",
+  "generatedAt": "2026-02-26T02:41:09.153Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 4,
-    "implemented": 3,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
-        "id": "REQ-10",
-        "summary": "Create a 'My Mods' page at route `/my-mods` that is only accessible when the user is authenticated. The page fetches and displays all mods belonging to the logged-in user by calling `getModsByOwner` with their principal. Each mod entry in the list shows the mod title, game, category, upload date, and a 'Delete' button. The 'Delete' button calls `deleteMod` on the backend (using the authenticated actor) and refreshes the list on success. Show a confirmation prompt before deletion. Add a 'My Mods' navigation link in the nav bar that is only visible when logged in.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/MyModsPage.tsx",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/App.tsx",
-          "frontend/src/components/Layout.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/MyModsPage.tsx",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/App.tsx",
-          "frontend/src/components/Layout.tsx"
-        ]
-      },
-      {
-        "id": "REQ-7",
-        "summary": "Update the backend Motoko actor to store the uploader's principal (caller) with each mod entry. Add a query method `getModsByOwner(principal)` that returns only mods belonging to that principal. Update `uploadMod` to record the caller's principal as the mod owner. Update `deleteMod` to enforce that only the mod owner (matching principal) can delete their own mod; return an error variant if the caller is not the owner.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-8",
-        "summary": "Add a Login/Logout button to the navigation bar in Layout.tsx that uses the existing `useInternetIdentity` hook. When logged out, show a 'Login' button styled with the neon accent color that triggers Internet Identity authentication. When logged in, show the user's abbreviated principal and a 'Logout' button.",
+        "id": "REQ-17",
+        "summary": "Enhance the 'NFS MODS HUB' text in the navigation bar (`frontend/src/components/Layout.tsx`) with a neon glow effect using CSS text-shadow with the neon accent color (#C8FF00). Ensure the Barlow Condensed bold typeface is applied. Optionally add a subtle pulsing or static glow animation to make the branding visually striking.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/Layout.tsx"
@@ -46,40 +22,39 @@
         ]
       },
       {
-        "id": "REQ-9",
-        "summary": "Protect the mod upload page and form: if the user is not authenticated, redirect them to the homepage or show a prompt to log in via Internet Identity instead of the upload form. When authenticated, the upload form should use the authenticated actor (from `useActor`) so the caller's principal is recorded. Remove the manual 'author name' field or pre-fill it from identity context, since the principal is now stored on the backend.",
+        "id": "REQ-18",
+        "summary": "Apply neon glow styling to other key accent elements across the site (e.g., the 'Upload Mod' button, active nav links, download buttons, category badges, and card hover borders) using CSS box-shadow or text-shadow with the neon accent color (#C8FF00). Define reusable Tailwind utility classes or CSS custom properties for neon glow effects in `frontend/src/index.css` or `frontend/tailwind.config.js` so the effect is applied consistently.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/ModUploadPage.tsx"
+          "frontend/tailwind.config.js",
+          "frontend/src/index.css",
+          "frontend/src/components/Layout.tsx",
+          "frontend/src/components/ModCard.tsx",
+          "frontend/src/pages/ModUploadPage.tsx",
+          "frontend/src/pages/ModDetailPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/ModUploadPage.tsx"
+          "frontend/tailwind.config.js",
+          "frontend/src/index.css",
+          "frontend/src/components/Layout.tsx",
+          "frontend/src/components/ModCard.tsx",
+          "frontend/src/pages/ModUploadPage.tsx",
+          "frontend/src/pages/ModDetailPage.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/authorization/MixinAuthorization.mo",
-    "backend/authorization/access-control.mo",
-    "backend/main.mo",
-    "backend/migration.mo",
     "build-request.json",
-    "build-template/README.md",
-    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
     "frontend/src/components/Layout.tsx",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/components/ModCard.tsx",
+    "frontend/src/index.css",
+    "frontend/src/pages/ModDetailPage.tsx",
     "frontend/src/pages/ModUploadPage.tsx",
-    "frontend/src/pages/MyModsPage.tsx",
-    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

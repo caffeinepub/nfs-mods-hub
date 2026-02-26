@@ -1,13 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Add Internet Identity authentication to NFS Mod Garage, protecting uploads and adding a personal "My Mods" management page.
+**Goal:** Add neon glow effects and Barlow Condensed bold font styling to the nav branding and key accent elements across the NFS Mods Hub site.
 
 **Planned changes:**
-- Update the backend Motoko actor to store the uploader's principal with each mod, add `getModsByOwner(principal)` query method, and enforce owner-only deletion in `deleteMod`
-- Add a Login/Logout button to the navigation bar using the existing `useInternetIdentity` hook; show abbreviated principal and Logout when authenticated
-- Protect the `/upload` route — unauthenticated users see a login prompt or are redirected; authenticated uploads use the authenticated actor so the caller's principal is recorded; remove or auto-fill the manual author field
-- Create a `/my-mods` route that lists only the logged-in user's mods (title, game, category, upload date) with a confirmation-gated Delete button that calls `deleteMod` via the authenticated actor
-- Add a "My Mods" navigation link that is only visible when the user is logged in
+- Apply a CSS `text-shadow` neon glow effect using `#C8FF00` to the "NFS MODS HUB" navigation bar text, with Barlow Condensed bold typeface and an optional subtle pulsing animation
+- Define reusable neon glow utility classes or CSS custom properties in `index.css` or `tailwind.config.js` for consistent use across the site
+- Apply neon glow (`box-shadow` or `text-shadow`) to primary CTA buttons (Upload Mod, Download, Login), card hover borders, and active/hovered nav links
 
-**User-visible outcome:** Users can log in with Internet Identity, upload mods tied to their identity, manage and delete their own mods from a dedicated My Mods page, and are prevented from accessing upload or delete actions unless authenticated.
+**User-visible outcome:** The site branding and key interactive elements visually pop with a consistent neon green glow effect that reinforces the dark racing theme.

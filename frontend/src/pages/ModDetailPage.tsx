@@ -2,7 +2,6 @@ import { useNavigate, useParams } from '@tanstack/react-router';
 import { ArrowLeft, Download, Calendar, User, Gamepad2, FileArchive, HardDrive, Loader2, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetModById, useIncrementDownloadCount } from '../hooks/useQueries';
 
@@ -37,6 +36,7 @@ function formatFileSize(bytes: bigint): string {
 export default function ModDetailPage() {
   const navigate = useNavigate();
   const { id } = useParams({ from: '/mod/$id' });
+
   const { data: mod, isLoading, isError } = useGetModById(id);
   const incrementDownload = useIncrementDownloadCount();
 
@@ -45,17 +45,54 @@ export default function ModDetailPage() {
     try {
       await incrementDownload.mutateAsync(mod.id);
       toast.success('Download started!', {
-        description: `Downloading ${mod.fileName}`,
+        description: `Downloading "${mod.title}"`,
       });
     } catch {
-      toast.error('Failed to register download');
+      toast.error('Download failed', {
+        description: 'Could not process the download. Please try again.',
+      });
     }
   };
 
-  const categoryClass = mod ? (CATEGORY_COLORS[mod.category] ?? CATEGORY_COLORS['Other']) : '';
+  if (isLoading) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+        <Skeleton className="h-6 w-32 mb-8" />
+        <Skeleton className="w-full aspect-video rounded-xl mb-8" />
+        <Skeleton className="h-10 w-3/4 mb-4" />
+        <Skeleton className="h-6 w-1/4 mb-8" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 rounded-lg" />)}
+        </div>
+        <Skeleton className="h-32 w-full rounded-lg" />
+      </div>
+    );
+  }
+
+  if (isError || !mod) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+        <button
+          onClick={() => navigate({ to: '/' })}
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-neon transition-colors mb-8 group"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          Back to Mods
+        </button>
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <AlertTriangle className="w-16 h-16 text-destructive mb-4" />
+          <h2 className="font-display font-black text-2xl mb-2">Mod Not Found</h2>
+          <p className="text-muted-foreground">This mod doesn't exist or has been removed.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const categoryClass = CATEGORY_COLORS[mod.category] ?? CATEGORY_COLORS['Other'];
+  const previewUrl = mod.previewImage ? mod.previewImage.getDirectURL() : null;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
       {/* Back link */}
       <button
         onClick={() => navigate({ to: '/' })}
@@ -65,134 +102,109 @@ export default function ModDetailPage() {
         Back to Mods
       </button>
 
-      {/* Loading State */}
-      {isLoading && (
-        <div className="space-y-6">
-          <div className="space-y-3">
-            <Skeleton className="h-8 w-2/3 bg-white/5" />
-            <Skeleton className="h-5 w-1/3 bg-white/5" />
+      {/* Preview Image */}
+      <div className="w-full aspect-video rounded-xl overflow-hidden bg-surface border border-white/5 mb-8 shadow-neon-sm">
+        {previewUrl ? (
+          <img
+            src={previewUrl}
+            alt={`${mod.title} preview`}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <img
+            src="/assets/generated/mod-preview-placeholder.dim_800x450.png"
+            alt="No preview available"
+            className="w-full h-full object-cover opacity-40"
+          />
+        )}
+      </div>
+
+      {/* Title & Category */}
+      <div className="flex flex-wrap items-start gap-3 mb-4">
+        <h1 className="font-display font-black text-3xl md:text-4xl tracking-tight text-foreground flex-1">
+          {mod.title}
+        </h1>
+        <span className={`text-sm font-semibold px-3 py-1 rounded border ${categoryClass} shrink-0 mt-1`}>
+          {mod.category}
+        </span>
+      </div>
+
+      {/* Game tag */}
+      <div className="flex items-center gap-2 mb-6">
+        <Gamepad2 className="w-4 h-4 text-neon/70" />
+        <span className="text-sm font-medium text-neon/80 bg-neon/10 px-3 py-1 rounded-full border border-neon/20">
+          {mod.game}
+        </span>
+      </div>
+
+      {/* Description */}
+      {mod.description && (
+        <p className="text-muted-foreground leading-relaxed mb-8 text-base">
+          {mod.description}
+        </p>
+      )}
+
+      {/* Metadata grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="bg-surface border border-white/5 rounded-lg p-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+            <User className="w-3.5 h-3.5" />
+            Author
           </div>
-          <div className="bg-surface border border-white/5 rounded-xl p-6 space-y-4">
-            <Skeleton className="h-4 w-full bg-white/5" />
-            <Skeleton className="h-4 w-full bg-white/5" />
-            <Skeleton className="h-4 w-3/4 bg-white/5" />
+          <p className="text-sm font-semibold text-foreground truncate">{mod.author}</p>
+        </div>
+        <div className="bg-surface border border-white/5 rounded-lg p-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+            <Calendar className="w-3.5 h-3.5" />
+            Uploaded
+          </div>
+          <p className="text-sm font-semibold text-foreground">{formatDate(mod.uploadTimestamp)}</p>
+        </div>
+        <div className="bg-surface border border-white/5 rounded-lg p-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+            <Download className="w-3.5 h-3.5" />
+            Downloads
+          </div>
+          <p className="text-sm font-semibold text-neon">{mod.downloadCount.toString()}</p>
+        </div>
+        <div className="bg-surface border border-white/5 rounded-lg p-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+            <HardDrive className="w-3.5 h-3.5" />
+            File Size
+          </div>
+          <p className="text-sm font-semibold text-foreground">{formatFileSize(mod.fileSize)}</p>
+        </div>
+      </div>
+
+      {/* File info & Download */}
+      <div className="bg-surface border border-white/5 rounded-xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-neon/10 border border-neon/20 flex items-center justify-center shrink-0">
+            <FileArchive className="w-5 h-5 text-neon" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-foreground">{mod.fileName}</p>
+            <p className="text-xs text-muted-foreground">{formatFileSize(mod.fileSize)}</p>
           </div>
         </div>
-      )}
-
-      {/* Error State */}
-      {isError && (
-        <div className="text-center py-20">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-destructive/10 border border-destructive/20 mb-6">
-            <AlertTriangle className="w-10 h-10 text-destructive" />
-          </div>
-          <h2 className="font-display font-bold text-2xl text-foreground mb-2">Mod Not Found</h2>
-          <p className="text-muted-foreground mb-6">This mod may have been removed or the link is invalid.</p>
-          <Button
-            onClick={() => navigate({ to: '/' })}
-            className="bg-neon text-black font-bold hover:bg-neon/90"
-          >
-            Browse All Mods
-          </Button>
-        </div>
-      )}
-
-      {/* Mod Detail */}
-      {mod && !isLoading && (
-        <article>
-          {/* Header */}
-          <div className="mb-6">
-            <div className="flex flex-wrap items-start gap-3 mb-3">
-              <h1 className="font-display font-black text-3xl md:text-4xl tracking-tight text-foreground flex-1">
-                {mod.title}
-              </h1>
-              <span className={`text-sm font-semibold px-3 py-1 rounded border ${categoryClass}`}>
-                {mod.category}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Gamepad2 className="w-4 h-4 text-neon/70" />
-              <span className="text-sm font-medium text-neon/80 bg-neon/10 px-3 py-1 rounded-full border border-neon/20">
-                Need for Speed: {mod.game}
-              </span>
-            </div>
-          </div>
-
-          {/* Main card */}
-          <div className="bg-surface border border-white/5 rounded-xl overflow-hidden mb-6">
-            {/* Top neon accent */}
-            <div className="h-0.5 w-full bg-gradient-to-r from-neon/0 via-neon to-neon/0" />
-
-            <div className="p-6 md:p-8">
-              {/* Description */}
-              <div className="mb-8">
-                <h2 className="font-display font-bold text-sm uppercase tracking-widest text-neon/70 mb-3">
-                  Description
-                </h2>
-                <p className="text-foreground/90 leading-relaxed whitespace-pre-wrap">
-                  {mod.description}
-                </p>
-              </div>
-
-              {/* Metadata grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div className="bg-background/50 rounded-lg p-3 border border-white/5">
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
-                    <User className="w-3 h-3" /> Author
-                  </div>
-                  <p className="font-semibold text-sm text-foreground truncate">{mod.author}</p>
-                </div>
-                <div className="bg-background/50 rounded-lg p-3 border border-white/5">
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
-                    <Download className="w-3 h-3" /> Downloads
-                  </div>
-                  <p className="font-bold text-sm text-neon">{mod.downloadCount.toString()}</p>
-                </div>
-                <div className="bg-background/50 rounded-lg p-3 border border-white/5">
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
-                    <HardDrive className="w-3 h-3" /> File Size
-                  </div>
-                  <p className="font-semibold text-sm text-foreground">{formatFileSize(mod.fileSize)}</p>
-                </div>
-                <div className="bg-background/50 rounded-lg p-3 border border-white/5">
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-1">
-                    <Calendar className="w-3 h-3" /> Uploaded
-                  </div>
-                  <p className="font-semibold text-xs text-foreground">{formatDate(mod.uploadTimestamp)}</p>
-                </div>
-              </div>
-
-              {/* File info */}
-              <div className="flex items-center gap-3 p-4 bg-background/50 rounded-lg border border-white/5 mb-6">
-                <FileArchive className="w-8 h-8 text-neon/60 shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm text-foreground truncate">{mod.fileName}</p>
-                  <p className="text-xs text-muted-foreground">{formatFileSize(mod.fileSize)}</p>
-                </div>
-              </div>
-
-              {/* Download button */}
-              <Button
-                onClick={handleDownload}
-                disabled={incrementDownload.isPending}
-                className="w-full bg-neon text-black font-bold text-base py-6 hover:bg-neon/90 hover:shadow-neon transition-all duration-200 gap-2"
-              >
-                {incrementDownload.isPending ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-5 h-5" />
-                    Download Mod
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-        </article>
-      )}
+        <Button
+          onClick={handleDownload}
+          disabled={incrementDownload.isPending}
+          className="bg-neon text-black font-bold hover:bg-neon/90 transition-all duration-200 gap-2 shrink-0 shadow-neon-btn hover:shadow-neon-lg neon-button-active"
+        >
+          {incrementDownload.isPending ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Processing…
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4" />
+              Download Mod
+            </>
+          )}
+        </Button>
+      </div>
     </div>
   );
 }
